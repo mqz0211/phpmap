@@ -1,0 +1,7 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: phpmap
+Source: https://github.com/mqz0211/phpmap
+
+Files: *
+Copyright: 2025 Qhaleesh Zhariif
+License: Apache-2.0
