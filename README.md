@@ -18,7 +18,7 @@
 ## Example Usage
 
 ```bash
-python3 phpmap.py -u http://target.com/index.php --lfi
+./phpmap.py -u http://target.com/index.php --lfi
 ```
 
 Available options:
@@ -38,6 +38,23 @@ Available options:
 git clone https://github.com/mqz0211/phpmap.git
 cd phpmap
 pip install -r requirements.txt
+chmod +x phpmap.py
+```
+
+---
+
+## Run From Anywhere (Optional)
+
+To run `phpmap` from anywhere on your system:
+
+```bash
+sudo cp phpmap.py /usr/local/bin/phpmap
+```
+
+Then simply run:
+
+```bash
+phpmap -u http://target.com/index.php --lfi
 ```
 
 ---
