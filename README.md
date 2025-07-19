@@ -2,6 +2,8 @@
 
 **phpmap** is a modular PHP vulnerability scanner and exploitation framework, designed to automate the discovery of common PHP-based web application flaws. Inspired by `sqlmap`, `phpmap` targets vulnerabilities like Local File Inclusion (LFI), Remote File Inclusion (RFI), upload bypasses, and PHP deserialization bugs.
 
+phpmap is designed with modularity and ethical testing in mind and aims to meet Kali Linux packaging standards.
+
 ---
 
 ## Features
