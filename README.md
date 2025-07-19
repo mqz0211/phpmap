@@ -50,9 +50,9 @@ Licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-
 
 ## 👨‍💻 Author
 
-Developed by **Your Name / Alias**
-GitHub: [github.com/yourusername](https://github.com/yourusername)
-Twitter: [@yourhandle](https://twitter.com/yourhandle)
+Developed by **MQZ**
+GitHub: [github.com/mqz0211](https://github.com/mqz0211)
+
 
 ---
 
