@@ -4,18 +4,18 @@
 
 ---
 
-##  Features
+## Features
 
-*  Local File Inclusion (LFI) Scanner
-*  Upload Bypass Detection *(coming soon)*
-*  PHP Deserialization Exploit Scanner *(coming soon)*
-*  Modular code for easy extension
-*  CLI-based and fast
-*  Kali Linux ready (Debian packaging supported)
+* Local File Inclusion (LFI) Scanner
+* Upload Bypass Detection *(coming soon)*
+* PHP Deserialization Exploit Scanner *(coming soon)*
+* Modular code for easy extension
+* CLI-based and fast
+* Kali Linux ready (Debian packaging supported)
 
 ---
 
-##  Example Usage
+## Example Usage
 
 ```bash
 python3 phpmap.py -u http://target.com/index.php --lfi
@@ -32,56 +32,83 @@ Available options:
 
 ---
 
-##  Installation
+## Installation
 
 ```bash
 git clone https://github.com/mqz0211/phpmap.git
 cd phpmap
 pip install -r requirements.txt
 ```
+
 ---
+
 ## Open in Google Cloud Shell
+
 [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/mqz0211/phpmap&cloudshell_working_dir=phpmap)
 
 ---
 
-##  License
+## License
 
 Licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ---
 
-##  Author
+## Author
 
 Developed by **MQZ**
 GitHub: [github.com/mqz0211](https://github.com/mqz0211)
 
-
 ---
 
-## 🛠Dependencies
+## Dependencies
 
 * Python 3.6+
 * `requests` (to be used in active modules)
 
 ---
 
-##  Contributing
+## Contributing
 
 Pull requests and module contributions are welcome. If you want to add new scanners (e.g. eval injection, RCE, etc.), open an issue first.
 
 ---
 
-##  Disclaimer
+## Disclaimer
 
 This tool is for **educational and authorized testing purposes only**. Any misuse is the sole responsibility of the user. The author assumes no liability.
 
 ---
 
-##  Upcoming Modules
+## Upcoming Modules
 
 * `--rfi` (Remote File Inclusion)
 * `--php-self-injection`
 * `--eval-check`
 * `--log-poisoning`
 * Payload encoder / WAF bypass
+
+---
+
+## Copyright
+
+```
+Copyright © 2025 Qhaleesh Zhariif
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at:
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+This project is released in good faith for educational and ethical testing purposes only.
+The developer shall not be held liable for any misuse or damage resulting from this software,
+including violations of laws in any jurisdiction, including Malaysia.
+It is the end user's responsibility to ensure lawful usage and compliance with all applicable regulations.
+```
