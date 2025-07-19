@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # phpmap: PHP Exploitation Toolkit
 # Initial CLI scaffold for Kali integration
 # License: Apache License 2.0
