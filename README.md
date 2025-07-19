@@ -4,18 +4,18 @@
 
 ---
 
-## 🚀 Features
+##  Features
 
-* 🔍 Local File Inclusion (LFI) Scanner
-* 📂 Upload Bypass Detection *(coming soon)*
-* 🧬 PHP Deserialization Exploit Scanner *(coming soon)*
-* 🧰 Modular code for easy extension
-* 🎯 CLI-based and fast
-* 🐧 Kali Linux ready (Debian packaging supported)
+*  Local File Inclusion (LFI) Scanner
+*  Upload Bypass Detection *(coming soon)*
+*  PHP Deserialization Exploit Scanner *(coming soon)*
+*  Modular code for easy extension
+*  CLI-based and fast
+*  Kali Linux ready (Debian packaging supported)
 
 ---
 
-## 🧪 Example Usage
+##  Example Usage
 
 ```bash
 python3 phpmap.py -u http://target.com/index.php --lfi
@@ -32,23 +32,26 @@ Available options:
 
 ---
 
-## 📦 Installation
+##  Installation
 
 ```bash
 git clone https://github.com/yourusername/phpmap.git
 cd phpmap
 pip install -r requirements.txt
 ```
+---
+## Open in Google Cloud Shell
+[![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/mqz0211/phpmap&cloudshell_working_dir=phpmap)
 
 ---
 
-## 📜 License
+##  License
 
 Licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 Developed by **MQZ**
 GitHub: [github.com/mqz0211](https://github.com/mqz0211)
@@ -56,26 +59,26 @@ GitHub: [github.com/mqz0211](https://github.com/mqz0211)
 
 ---
 
-## 🛠 Dependencies
+## 🛠Dependencies
 
 * Python 3.6+
 * `requests` (to be used in active modules)
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 
 Pull requests and module contributions are welcome. If you want to add new scanners (e.g. eval injection, RCE, etc.), open an issue first.
 
 ---
 
-## ⚠️ Disclaimer
+##  Disclaimer
 
 This tool is for **educational and authorized testing purposes only**. Any misuse is the sole responsibility of the user. The author assumes no liability.
 
 ---
 
-## 🔥 Upcoming Modules
+##  Upcoming Modules
 
 * `--rfi` (Remote File Inclusion)
 * `--php-self-injection`
