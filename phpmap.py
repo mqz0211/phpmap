@@ -39,7 +39,7 @@ def main():
     parser.add_argument("-u", "--url", help="Target URL")
     parser.add_argument("--lfi", action="store_true", help="Run LFI scanner")
     parser.add_argument("--upload-bypass", action="store_true", help="Check for file upload bypass")
-    parser.add_argument("--deserialization", action="store_true", help="Check for PHP deserialization flaws")
+    parser.add_argument("-d", "--deserialization", action="store_true", help="Check for PHP deserialization flaws")
     args = parser.parse_args()
 
     banner()
