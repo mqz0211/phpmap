@@ -1,7 +1,7 @@
 Source: phpmap
 Section: utils
 Priority: optional
-Maintainer: Your Name <g.s3cure@gmail.com>
+Maintainer: MQZ <g.s3cure@gmail.com>
 Build-Depends: debhelper (>= 11)
 Standards-Version: 4.1.4
 Homepage: https://github.com/mqz0211/phpmap
