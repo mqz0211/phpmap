@@ -35,7 +35,7 @@ Available options:
 ##  Installation
 
 ```bash
-git clone https://github.com/yourusername/phpmap.git
+git clone https://github.com/mqz0211/phpmap.git
 cd phpmap
 pip install -r requirements.txt
 ```
