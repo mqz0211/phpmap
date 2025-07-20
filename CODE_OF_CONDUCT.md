@@ -40,4 +40,4 @@ This Code of Conduct is adapted from the [Contributor Covenant](https://www.cont
 
 ---
 
-*Be kind. Be curious. Build cool stuff.*
+*Be kind. Be cool. Build cool stuff.*
