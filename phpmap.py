@@ -17,8 +17,7 @@ def banner():
 |_|   |_| |_|_|   |_|  |_/_/   \_\_|    
                                         
 PHP Vulnerability Scanner & Exploitation Framework
-Author: Your Name | Version: 1.0.0
-License: Apache 2.0
+ Version: 1.0.0  | License: Apache 2.0
     """)
 
 
