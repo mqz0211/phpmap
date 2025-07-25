@@ -8,21 +8,24 @@ phpmap is designed with modularity and ethical testing in mind and aims to meet 
 
 ## Features
 
-* Local File Inclusion (LFI) Scanner
-* Upload Bypass Detection *(coming soon)*
-* PHP Deserialization Exploit Scanner *(coming soon)*
-* Modular code for easy extension
-* CLI-based and fast
-* Kali Linux ready (Debian packaging supported)
-
----
+- Local File Inclusion (LFI) scanner
+- Remote File Inclusion (RFI) scanner
+- SQL Injection scanner
+- XSS scanner
+- Directory listing checker
+- Backup/config file finder
+- Admin panel bruteforcer
+- phpinfo() exposure checker
+- Upload bypass (coming soon)
+- PHP deserialization (coming soon)
 
 ## Example Usage
 
 ```bash
-./phpmap.py -u http://target.com/index.php --lfi
+python3 phpmap.py -u http://example.com/index.php --lfi
+python3 phpmap.py -u http://example.com/index.php --sql-injection
 ```
-
+---
 Available options:
 
 ```bash
