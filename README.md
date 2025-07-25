@@ -64,9 +64,17 @@ phpmap -u http://target.com/index.php --lfi
 
 ---
 
-## Open in Google Cloud Shell
+## Open in Cloud Shell
 
 [![Open in Cloud Shell](https://gstatic.com/cloudssh/images/open-btn.png)](https://ssh.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/mqz0211/phpmap&cloudshell_working_dir=phpmap)
+
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/mqz0211/phpmap)
+
+[![Run on Replit](https://replit.com/badge/github/mqz0211/recoverycodegencli)](https://replit.com/new/github.com/mqz0211/phpmap)
+
+[![Open in Codespaces](https://img.shields.io/badge/Open%20in%20-GitHub%20Codespaces-blue?logo=github)](https://github.com/codespaces/new?template_repository=github.com/mqz0211/phpmap)
+
+[![Run on Ideone](https://img.shields.io/badge/Run%20on-Ideone-orange?logo=codeforces)](https://ideone.com/)
 
 ---
 
